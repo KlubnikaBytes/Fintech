@@ -1,0 +1,187 @@
+'use client'
+
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { ArrowRight, Send, Users, History, Settings, TrendingUp, Clock } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { MultiCurrencyWallet } from '@/components/dashboard/multi-currency-wallet'
+
+import { useLanguage } from '@/lib/language-context'
+
+export default function DashboardPage() {
+    const { t } = useLanguage()
+    const mockRecentTransactions = [
+        { id: 1, recipient: 'John Doe', amount: 500, currency: 'NGN', status: 'completed', date: '2 hours ago' },
+        { id: 2, recipient: 'Jane Smith', amount: 1200, currency: 'INR', status: 'processing', date: '1 day ago' },
+        { id: 3, recipient: 'Bob Johnson', amount: 300, currency: 'PHP', status: 'completed', date: '3 days ago' },
+    ]
+
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-indigo-950">
+            {/* Animated Background */}
+            <div className="pointer-events-none fixed inset-0 overflow-hidden">
+                <motion.div
+                    className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-gradient-to-br from-blue-400/20 to-purple-400/20 blur-3xl"
+                    animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0] }}
+                    transition={{ duration: 20, repeat: Infinity }}
+                />
+                <motion.div
+                    className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-gradient-to-br from-indigo-400/20 to-pink-400/20 blur-3xl"
+                    animate={{ scale: [1.2, 1, 1.2], rotate: [90, 0, 90] }}
+                    transition={{ duration: 25, repeat: Infinity }}
+                />
+            </div>
+
+            {/* Header */}
+            <header className="relative border-b border-gray-200/50 bg-white/80 shadow-sm backdrop-blur-xl dark:border-gray-800/50 dark:bg-gray-900/80">
+                <div className="container mx-auto px-4">
+                    <div className="flex h-20 items-center justify-between">
+                        <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                            Home
+                        </h1>
+                        <div className="flex items-center gap-4">
+                            <Link href="/settings">
+                                <Button variant="ghost" size="sm">
+                                    <Settings className="h-5 w-5" />
+                                </Button>
+                            </Link>
+                            <Link href="/login">
+                                <Button variant="outline">Logout</Button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main className="container relative mx-auto px-4 py-12">
+                <div className="mx-auto max-w-6xl">
+                    {/* Welcome Section */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mb-8"
+                    >
+                        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('dashboard.welcome')}</h2>
+                        <p className="mt-2 text-gray-600 dark:text-gray-400">{t('dashboard.overview')}</p>
+                    </motion.div>
+
+                    {/* Balance Card */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="mb-8"
+                    >
+                        <MultiCurrencyWallet />
+                    </motion.div>
+
+                    {/* Quick Actions */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="mb-12 grid gap-4 md:grid-cols-3"
+                    >
+                        <Link href="/send-money">
+                            <Card className="group cursor-pointer overflow-hidden border-0 bg-white/60 backdrop-blur-sm transition-all hover:-translate-y-2 hover:shadow-2xl dark:bg-gray-900/60">
+                                <CardContent className="flex items-center gap-4 p-6">
+                                    <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 shadow-lg">
+                                        <Send className="h-7 w-7 text-white" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-gray-900 dark:text-white">Send Money</h4>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">Transfer worldwide</p>
+                                    </div>
+                                    <ArrowRight className="ml-auto h-5 w-5 text-gray-400 transition-transform group-hover:translate-x-1" />
+                                </CardContent>
+                            </Card>
+                        </Link>
+
+                        <Link href="/recipients">
+                            <Card className="group cursor-pointer overflow-hidden border-0 bg-white/60 backdrop-blur-sm transition-all hover:-translate-y-2 hover:shadow-2xl dark:bg-gray-900/60">
+                                <CardContent className="flex items-center gap-4 p-6">
+                                    <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 shadow-lg">
+                                        <Users className="h-7 w-7 text-white" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-gray-900 dark:text-white">Recipients</h4>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">Manage contacts</p>
+                                    </div>
+                                    <ArrowRight className="ml-auto h-5 w-5 text-gray-400 transition-transform group-hover:translate-x-1" />
+                                </CardContent>
+                            </Card>
+                        </Link>
+
+                        <Link href="/transactions">
+                            <Card className="group cursor-pointer overflow-hidden border-0 bg-white/60 backdrop-blur-sm transition-all hover:-translate-y-2 hover:shadow-2xl dark:bg-gray-900/60">
+                                <CardContent className="flex items-center gap-4 p-6">
+                                    <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 shadow-lg">
+                                        <History className="h-7 w-7 text-white" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-gray-900 dark:text-white">Transactions</h4>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">View history</p>
+                                    </div>
+                                    <ArrowRight className="ml-auto h-5 w-5 text-gray-400 transition-transform group-hover:translate-x-1" />
+                                </CardContent>
+                            </Card>
+                        </Link>
+                    </motion.div>
+
+                    {/* Recent Transactions */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                    >
+                        <Card className="overflow-hidden border-0 shadow-xl">
+                            <CardHeader className="border-b border-gray-200 bg-white/60 p-6 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-900/60">
+                                <CardTitle className="flex items-center gap-2">
+                                    <History className="h-5 w-5" />
+                                    Recent Transactions
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                {mockRecentTransactions.map((tx, index) => (
+                                    <motion.div
+                                        key={tx.id}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: 0.4 + index * 0.1 }}
+                                        className="flex items-center justify-between border-b border-gray-200 p-6 transition-colors last:border-0 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-900/50"
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-950 dark:to-purple-950">
+                                                <TrendingUp className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                                            </div>
+                                            <div>
+                                                <p className="font-semibold text-gray-900 dark:text-white">{tx.recipient}</p>
+                                                <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                                                    <Clock className="h-3 w-3" />
+                                                    {tx.date}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="font-semibold text-gray-900 dark:text-white">
+                                                {tx.amount} {tx.currency}
+                                            </p>
+                                            <Badge
+                                                variant={tx.status === 'completed' ? 'default' : 'secondary'}
+                                                className={tx.status === 'completed' ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-400'}
+                                            >
+                                                {tx.status}
+                                            </Badge>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+                </div>
+            </main>
+        </div>
+    )
+}
