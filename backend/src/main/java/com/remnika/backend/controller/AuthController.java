@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
+import jakarta.servlet.http.HttpServletRequest; // Add this import
 
 @RestController
 @RequestMapping("/api/auth")
@@ -46,5 +47,18 @@ public class AuthController {
         }
 
         return ResponseEntity.ok(Map.of("message", "Login Successful!", "token", token));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            userService.logoutUser(token);
+            return ResponseEntity.ok("Logged out successfully. Session invalidated.");
+        }
+
+        return ResponseEntity.badRequest().body("No active session found in headers.");
     }
 }
